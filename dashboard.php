@@ -96,12 +96,18 @@ if (!isset($_SESSION['rolle'])) {
     </header>
 
     <div class="container">
-        <h2>Willkommen, <?php echo htmlspecialchars($_SESSION['name']); ?> (<?php echo $_SESSION['rolle']; ?>)</h2>
+    <h2>
+        Willkommen, 
+        <?php echo htmlspecialchars($_SESSION['name']); ?> 
+        (<?php echo ucfirst(strtolower($_SESSION['rolle'])); ?>)
+    </h2>
+
 
         <!-- 🟢 Nur Ärzte sehen diesen Link -->
         <?php if ($_SESSION['rolle'] === 'arzt'): ?>
             <p>
                 <a href="anzeigen.php" class="arzt-link">🗓 Alle Termine anzeigen</a>
+                <a href="kalender.php" class="btn btn-outline-primary">📆 Kalender aller Termine</a>
             </p>
         <?php endif; ?>
 
@@ -115,6 +121,7 @@ if (!isset($_SESSION['rolle'])) {
         <!-- Logout-Link für alle -->
         <p><a href="logout.php" class="logout-link">🚪 Logout</a></p>
     </div>
+    
 
     <footer>
         <p>&copy; 2025 Arzttermin-System. Alle Rechte vorbehalten.</p>

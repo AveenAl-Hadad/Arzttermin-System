@@ -37,7 +37,7 @@ $res = $conn->query($sql);
     <h2 class="text-center mb-4">🗓 Alle gebuchten Arzttermine</h2>
 
     <div class="mb-3">
-        <a href="dashboard.php" class="btn btn-secondary">⬅️ Zurück zum Dashboard</a>
+        <a href="dashboard.php" class="btn btn-secondary">⬅️ Zurück zum Startseite</a>
     </div>
 
     <?php if ($res->num_rows > 0): ?>

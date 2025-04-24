@@ -8,6 +8,8 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arzttermin-System</title>
+    
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -82,7 +84,7 @@ session_start();
 <body>
 
     <header>
-        <h1>Willkommen beim Arzttermin-System</h1>
+        <h1>Willkommen beim Arzttermin-System-Online buchen</h1>
     </header>
 
     <div class="container">

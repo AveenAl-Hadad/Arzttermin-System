@@ -100,11 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
             <?php if (!isset($_SESSION['userid'])): ?>
                 <div class="mt-4 text-center">
-                    <a href="index.php">Hauptmenu anzeigen</a>
+                    <a href="index.php">Züruck zu Startseite<</a>
                 </div>
             <?php else: ?>
                 <div class="mt-4 text-center">
-                    <a href="dashboard.php">Hauptmenu anzeigen</a>
+                    <a href="dashboard.php">Züruck zu Startseite</a>
                 </div>
             <?php endif; ?>
        
