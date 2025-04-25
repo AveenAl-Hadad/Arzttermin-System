@@ -13,10 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($res->num_rows > 0) {
         $row = $res->fetch_assoc();
+        echo $row['anrede']; // Vorübergehend zur Überprüfung
+
         if (password_verify($pw, $row['passwort'])) {
             $_SESSION['userid'] = $row['id'];
             $_SESSION['rolle'] = $row['rolle'];
             $_SESSION['name'] = $row['name'];
+            $_SESSION['anrede'] = $row['anrede']; 
             header("Location: dashboard.php");
             exit;
         } else {

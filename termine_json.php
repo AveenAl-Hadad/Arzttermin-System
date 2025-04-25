@@ -8,8 +8,10 @@ $events = [];
 
 while ($row = $result->fetch_assoc()) {
     $events[] = [
+        'anrede' => $row['anrede'],
         'title' => $row['name'] . " – " . $row['grund'],
-        'start' => $row['datum'] . 'T' . $row['uhrzeit']
+        'start' => $row['datum'] . 'T' . $row['uhrzeit'],
+        'email' => $row['email'] 
     ];
 }
 

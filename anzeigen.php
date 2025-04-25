@@ -44,20 +44,26 @@ $res = $conn->query($sql);
         <table class="table table-striped table-hover shadow">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>Anzal</th>
                     <th>Patient</th>
+                    <th>E_Mail</th>
                     <th>Datum</th>
                     <th>Uhrzeit</th>
                     <th>Grund</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $nr = 1; while ($row = $res->fetch_assoc()): ?>
+                <?php $nr = 1; while ($row = $res->fetch_assoc()): 
+                    // Datum und Uhrzeit formatieren
+                    $formatted_date = date("d.m.Y", strtotime($row['datum']));  // Datum im Format Tag.Monat.Jahr
+                    $formatted_time = date("H:i", strtotime($row['uhrzeit']));   // Uhrzeit im Format Stunden:Minuten
+                ?>
                     <tr>
                         <td><?= $nr++ ?></td>
                         <td><?= htmlspecialchars($row['name']) ?></td>
-                        <td><?= htmlspecialchars($row['datum']) ?></td>
-                        <td><?= htmlspecialchars($row['uhrzeit']) ?></td>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= $formatted_date?></td>
+                        <td><?= $formatted_time ?></td>
                         <td><?= htmlspecialchars($row['grund']) ?></td>
                     </tr>
                 <?php endwhile; ?>

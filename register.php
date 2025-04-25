@@ -5,6 +5,7 @@ include "verbindung.php";
 $meldung = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $anrede = $_POST['anrede'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $rolle = $_POST['rolle'];  // "arzt" oder "patient"
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($res->num_rows > 0) {
         $meldung = "❌ Diese E-Mail ist bereits registriert.";
     } else {
-        $sql = "INSERT INTO benutzer (name, email, rolle, passwort) VALUES ('$name', '$email', '$rolle', '$passwort')";
+        $sql = "INSERT INTO benutzer (anrede, name, email, rolle, passwort) VALUES ('$anrede','$name', '$email', '$rolle', '$passwort')";
         if ($conn->query($sql)) {
             $meldung = "✅ Registrierung erfolgreich. Sie können sich jetzt <a href='login.php'>einloggen</a>.";
         } else {
@@ -56,6 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?php endif; ?>
 
                     <form method="POST" action="register.php">
+
+                        <div class="mb-3">
+                            <label for="anrede" class="form-label">Anrede</label>
+                            <select class="form-select" id="anrede" name="anrede" required>
+                                <option value="">Bitte wählen</option>
+                                <option value="Herr">Herr</option>
+                                <option value="Frau">Frau</option>
+                            </select>
+                        </div>
+
                         <div class="mb-3">
                             <label for="name" class="form-label">Ihr Name</label>
                             <input type="text" class="form-control" id="name" name="name" required autofocus>

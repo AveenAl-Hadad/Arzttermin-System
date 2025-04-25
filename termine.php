@@ -3,13 +3,15 @@ session_start();
 include "verbindung.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $anrede = $_POST['anrede'];
     $name = $_POST['name'];
+    $email = $_POST['email']; 
     $datum = $_POST['datum'];
     $uhrzeit = $_POST['uhrzeit'];
     $grund = $_POST['grund'];
 
     // Doppelte Termine verhindern
-    $check = "SELECT * FROM termine WHERE datum='$datum' AND uhrzeit='$uhrzeit'";
+    $check = "SELECT * FROM termine WHERE datum='$datum' AND uhrzeit='$uhrzeit' AND email='$email'";
     $res = $conn->query($check);
 
     if ($res->num_rows > 0) {
@@ -20,14 +22,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Einfügen
-    $sql = "INSERT INTO termine (name, datum, uhrzeit, grund) VALUES ('$name', '$datum', '$uhrzeit', '$grund')";
+    $sql = "INSERT INTO termine (anrede, name, email, datum, uhrzeit, grund) VALUES ('$anrede', '$name', '$email', '$datum', '$uhrzeit', '$grund')";
     if ($conn->query($sql)) {
-        $_SESSION['buchung_erfolg'] = "✅ Termin erfolgreich gebucht für den <strong>$datum</strong> um <strong>$uhrzeit</strong>.";
+        $formatted_date = date("d.m.Y", strtotime($datum));  // Formatierung des Datums
+        $formatted_time = date("H:i", strtotime($uhrzeit));   // Formatierung der Uhrzeit
+
+        // Erfolgsnachricht mit dem formatierten Datum und der Uhrzeit
+        $_SESSION['buchung_erfolg'] = "✅ $anrede $name Termin erfolgreich gebucht für den <strong>$formatted_date</strong> um <strong>$formatted_time</strong>.";
+
+       // $_SESSION['buchung_erfolg'] = "✅ $anrede $name Termin erfolgreich gebucht für den <strong>$datum</strong> um <strong>$uhrzeit</strong>.";
+        
+        // 📧 E-Mail vorbereiten
+        $betreff = "🩺 Terminbestätigung – Ihr Arzttermin am $datum";
+        $nachricht = "Hallo $name,\n\n".
+                 "Sie haben erfolgreich einen Termin gebucht:\n\n".
+                 "📅 Datum: $datum\n🕑 Uhrzeit: $uhrzeit\n📝 Grund: $grund\n\n".
+                 "Vielen Dank für Ihre Buchung.\n\nIhre Arztpraxis";
+
+        $headers = "From: praxis@example.com";
+
+        // ✅ E-Mail senden (mail() funktioniert auf Webservern oder mit SMTP lokal)
+        mail($email, $betreff, $nachricht, $headers);
+
     } else {
         $_SESSION['buchung_error'] = "❌ Fehler beim Buchen des Termins.";
     }
-    // Am Ende von termine.php
-    $_SESSION['buchung_erfolg'] = "✅ Termin für den $datum um $uhrzeit erfolgreich gebucht.";
+    
     header("Location: termine.php");
     exit;
     
@@ -76,8 +96,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- ✅ Terminbuchungsformular -->
     <form action="termine.php" method="POST">
         <div class="mb-3">
+            <label for="anrede" class="form-label">Anrede</label>
+            <select class="form-select" id="anrede" name="anrede" required>
+                <option value="">Bitte wählen</option>
+                <option value="Herr">Herr</option>
+                <option value="Frau">Frau</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="name" class="form-label">Ihr Name</label>
             <input type="text" class="form-control" name="name" id="name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Ihre E-Mail-Adresse</label>
+            <input type="email" class="form-control" name="email" id="email" required>
         </div>
 
         <div class="mb-3">

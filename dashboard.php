@@ -96,19 +96,23 @@ if (!isset($_SESSION['rolle'])) {
     </header>
 
     <div class="container">
-    <h2>
-        Willkommen, 
-        <?php echo htmlspecialchars($_SESSION['name']); ?> 
-        (<?php echo ucfirst(strtolower($_SESSION['rolle'])); ?>)
-    </h2>
-
+        <?php
+            $rolle = $_SESSION['rolle'];
+            $anrede = $_SESSION['anrede'];
+            $name = $_SESSION['name'];
+         
+            if ($rolle === 'arzt') {
+                echo "<h2>Willkommen, Dr. $anrede $name</h2>";
+            } else {
+                echo "<h2>Willkommen, $anrede $name</h2>";
+            }
+        ?>        
 
         <!-- 🟢 Nur Ärzte sehen diesen Link -->
         <?php if ($_SESSION['rolle'] === 'arzt'): ?>
-            <p>
-                <a href="anzeigen.php" class="arzt-link">🗓 Alle Termine anzeigen</a>
-                <a href="kalender.php" class="btn btn-outline-primary">📆 Kalender aller Termine</a>
-            </p>
+            <p><a href="anzeigen.php" class="arzt-link">🗓 Alle Termine anzeigen</a></p><br>
+            <p><a href="kalender.php" class="btn btn-outline-primary">📆 Kalender aller Termine</a></p><br>
+            <p><a href="termine.php">➕ Termin buchen</a></p>
         <?php endif; ?>
 
         <!-- Für alle: Termin buchen -->
@@ -122,7 +126,6 @@ if (!isset($_SESSION['rolle'])) {
         <p><a href="logout.php" class="logout-link">🚪 Logout</a></p>
     </div>
     
-
     <footer>
         <p>&copy; 2025 Arzttermin-System. Alle Rechte vorbehalten.</p>
     </footer>
